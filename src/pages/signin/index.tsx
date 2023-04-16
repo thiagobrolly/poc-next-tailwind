@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function Signin() {
-  const { login, loadingAuth } = useAuth();
+  const { signIn, loadingAuth } = useAuth();
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -15,7 +15,7 @@ export default function Signin() {
     event.preventDefault();
 
     try {
-      await login(email, password);
+      await signIn(email, password);
     } catch (err) {
       console.log(err);
       setError(true);

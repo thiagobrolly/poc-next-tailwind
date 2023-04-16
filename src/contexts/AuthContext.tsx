@@ -1,13 +1,6 @@
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  // useEffect,
-  useState,
-} from 'react';
+import { ReactNode, createContext, useContext, useState } from 'react';
 
 import {
-  // onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
@@ -24,9 +17,10 @@ type UserType = {
 };
 
 interface UserContextProps {
+  isAuthenticated: boolean;
   user: UserType | null;
   signUp: (email: string, password: string, name: string) => void;
-  login: (email: string, password: string) => void;
+  signIn: (email: string, password: string) => void;
   logout: () => void;
   loadingAuth: boolean;
 }
@@ -40,28 +34,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   const [user, setUser] = useState<UserType | null>(null);
   const [loadingAuth, setLoadingAuth] = useState(false);
-
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       setUser({
-  //         uid: user.uid,
-  //         email: user.email,
-  //         displayName: user.displayName,
-  //       });
-  //     } else {
-  //       setUser(null);
-  //     }
-
-  //     setLoadingAuth(false);
-  //   });
-
-  //   return () => unsubscribe();
-  // }, []);
-
-  // const signUp = (email: string, password: string, name: string) => {
-  //   createUserWithEmailAndPassword(auth, email, password);
-  // };
 
   async function signUp(email: string, password: string, name: string) {
     setLoadingAuth(true);
@@ -89,7 +61,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       });
   }
 
-  async function login(email: string, password: string) {
+  async function signIn(email: string, password: string) {
     setLoadingAuth(true);
 
     await signInWithEmailAndPassword(auth, email, password)
@@ -115,7 +87,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       });
   }
 
-  // const login = (email: string, password: string) => {
+  // const signIn = (email: string, password: string) => {
   //   return signInWithEmailAndPassword(auth, email, password);
   // };
 
@@ -127,10 +99,10 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AuthContext.Provider
       value={{
-        // signed: !!user,
+        isAuthenticated: !!user,
         user,
         signUp,
-        login,
+        signIn,
         logout,
         loadingAuth,
       }}
