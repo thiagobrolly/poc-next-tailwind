@@ -1,10 +1,10 @@
 import React, { FormEvent } from 'react';
+
+import Head from 'next/head';
 import Link from 'next/link';
 import { useAuth } from '../../contexts/AuthContext';
-// import { useRouter } from 'next/router';
 
 export default function Signin() {
-  // const router = useRouter();
   const { login, loadingAuth } = useAuth();
 
   const [email, setEmail] = React.useState('');
@@ -23,12 +23,19 @@ export default function Signin() {
   };
 
   return (
-    <div>
-      <div>
-        <h1>Sign In</h1>
-        <form onSubmit={handleLogin}>
-          <label htmlFor="email">
-            <p>Email</p>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <Head>
+        <title>Home</title>
+      </Head>
+      <div className="max-w-sm w-full space-y-8">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Sign in to your account
+        </h2>
+        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+          <div>
+            <label className="sr-only" htmlFor="email">
+              Email
+            </label>
             <input
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -36,11 +43,14 @@ export default function Signin() {
               name="email"
               id="email"
               placeholder="example@mail.com"
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
             />
-          </label>
+          </div>
 
-          <label htmlFor="password">
-            <p>Password</p>
+          <div>
+            <label className="sr-only" htmlFor="password">
+              Password
+            </label>
             <input
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -48,11 +58,47 @@ export default function Signin() {
               name="password"
               id="password"
               placeholder="password"
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
             />
-          </label>
-          <button type="submit">{loadingAuth ? 'loading...' : 'Login'}</button>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <input
+                id="remember_me"
+                name="remember_me"
+                type="checkbox"
+                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+              />
+              <label
+                htmlFor="remember_me"
+                className="ml-2 block text-sm text-gray-900"
+              >
+                Remember me
+              </label>
+            </div>
+
+            <div className="text-sm">
+              <Link
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+                href="/signup"
+              >
+                Create an account
+              </Link>
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              {loadingAuth ? 'loading...' : 'Sign in'}
+            </button>
+          </div>
+
           {error && <span>Error</span>}
-          <Link href="/signup">Sign Up</Link>
+          {/* <Link href="/signup">Sign Up</Link> */}
         </form>
       </div>
     </div>

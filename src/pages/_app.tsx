@@ -3,6 +3,8 @@ import { AuthContextProvider } from '@/contexts/AuthContext';
 import { useRouter } from 'next/router';
 import { ProtectedRoute } from '@/components/ProptectedRoute';
 
+import '../styles/globals.css';
+
 const noAuthRequired = ['/', '/signin', '/signup'];
 
 export default function App({ Component, pageProps }: AppProps) {
