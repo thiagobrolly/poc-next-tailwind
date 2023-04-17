@@ -1,31 +1,58 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useState } from 'react';
 
 import Head from 'next/head';
 import Link from 'next/link';
 import { useAuth } from '../../contexts/AuthContext';
-
 export default function Signin() {
-  const { signIn, loadingAuth } = useAuth();
+  const { signIn, loadingAuth, testPhone } = useAuth();
 
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [error, setError] = React.useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(false);
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault();
 
+    const data = { email, password };
+
     try {
-      await signIn(email, password);
+      await signIn(data);
     } catch (err) {
       console.log(err);
       setError(true);
     }
   };
 
+  const handleOTP = async () => {
+    // const data = { email, password };
+
+    try {
+      await testPhone();
+    } catch (err) {
+      console.log(err);
+      setError(true);
+    }
+  };
+
+  // const handlePhone = async (event: FormEvent) => {
+  //   event.preventDefault();
+
+  //   // await handleVerifyCode();
+
+  //   // const data = { email, password };
+
+  //   // try {
+  //   //   await testPhone();
+  //   // } catch (err) {
+  //   //   console.log(err);
+  //   //   setError(true);
+  //   // }
+  // };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <Head>
-        <title>Home</title>
+        <title>Sign In</title>
       </Head>
       <div className="max-w-sm w-full space-y-8">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
@@ -90,6 +117,12 @@ export default function Signin() {
 
           <div>
             <button
+              onClick={handleOTP}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              {loadingAuth ? 'loading...' : 'OTP'}
+            </button>
+            <button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
@@ -99,6 +132,7 @@ export default function Signin() {
 
           {error && <span>Error</span>}
           {/* <Link href="/signup">Sign Up</Link> */}
+          <div id="recaptcha-container"></div>
         </form>
       </div>
     </div>

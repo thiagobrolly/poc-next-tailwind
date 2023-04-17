@@ -7,9 +7,10 @@ export function ProtectedRoute({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) {
-      router.push('/');
-    }
+    // if (!user) {
+    //   router.push('/');
+    // }
+    // console.log(user);
   }, [router, user]);
   return <>{user ? children : null}</>;
 }

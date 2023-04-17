@@ -1,8 +1,8 @@
 import { useAuth } from '@/contexts/AuthContext';
-import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
+import { parseCookies } from 'nookies';
 
 export default function Dashboard() {
-  const router = useRouter();
   const { user, logout } = useAuth();
 
   return (
@@ -13,7 +13,6 @@ export default function Dashboard() {
         type="button"
         onClick={() => {
           logout();
-          router.push('/');
         }}
       >
         Logout
@@ -21,3 +20,20 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { 'nextpoc.token': token } = parseCookies(ctx);
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
